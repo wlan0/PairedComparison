@@ -1,6 +1,7 @@
 package edu.cmu.pairedComparison.UI;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -19,6 +20,7 @@ public class MatrixTableHandler extends JPanel
 		table = new MatrixTable(model);
 		table.setBackground(Color.DARK_GRAY);
 		table.setBorder(BorderFactory.createEtchedBorder());
+		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		this.add(table);
 		GlobalsVars.getInstance().setMatrix(table);
 		GlobalsVars.getInstance().setArtifactCount(artifactCount);	

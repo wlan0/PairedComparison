@@ -22,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -50,8 +51,9 @@ public class PropertiesTab extends JPanel{
 	
 	public void setNotesVisibility(Boolean flag, int row, int col)
 	{
-		ComparisonNotesPane.setVisible(flag);
-		ArtifactNotesPane.setVisible(flag);
+		ComparisonNotesArea.setEditable(flag);
+		ArtifactNotes1TextField.setEditable(flag);
+		ArtifactNotes2TextField.setEditable(flag);
 		if(flag)
 		{
 			MatrixTableModel model = (MatrixTableModel) globals.getMatrix().getModel();
@@ -88,16 +90,19 @@ public class PropertiesTab extends JPanel{
 		propertiesTab.setLayout(new BoxLayout(propertiesTab, BoxLayout.PAGE_AXIS));
 		propertiesTab.setBackground(Color.DARK_GRAY);
 		JLabel ReplicationFactorlabel = HudWidgetFactory.createHudLabel("Replication Factor : ");
+		ReplicationFactorlabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		ReplicationFactorlabel.setFont(new Font("Lucida Grande",1,13));
 		RepicationFactortextField = HudWidgetFactory.createHudTextField("");
 		RepicationFactortextField.setFont(new Font("Lucida Grande",1,13));
-		RepicationFactortextField.setPreferredSize(new Dimension(200,24));
+		//RepicationFactortextField.setPreferredSize(new Dimension(200,24));
 		RepicationFactortextField.setText("2");
-		JLabel ConfidenceLevelLabel = HudWidgetFactory.createHudLabel("Confidence Level  : ");
+		JLabel ConfidenceLevelLabel = HudWidgetFactory.createHudLabel(" Confidence Level : ");
+		ConfidenceLevelLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		ConfidenceLevelLabel.setFont(new Font("Lucida Grande",1,13));
 		ConfidenceLeveltextField = HudWidgetFactory.createHudTextField("");
 		ConfidenceLeveltextField.setFont(new Font("Lucida Grande",1,13));
-		JLabel NamePaneLabel = HudWidgetFactory.createHudLabel("Name                     : ");
+		JLabel NamePaneLabel = HudWidgetFactory.createHudLabel("                    Name : ");
+		NamePaneLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		NamePaneLabel.setFont(new Font("Lucida Grande",1,13));
 		NamePaneTextField = HudWidgetFactory.createHudTextField("");
 		NamePaneTextField.setFont(new Font("Lucida Grande",1,13));
@@ -124,7 +129,8 @@ public class PropertiesTab extends JPanel{
 		replicationFactorPane.add(RepicationFactortextField);
 		propertiesTab.add(replicationFactorPane);
 		propertiesTabContainer.setBackground(Color.DARK_GRAY);
-		JLabel ArtifactCountLabel = HudWidgetFactory.createHudLabel("Artifact Count       : ");
+		JLabel ArtifactCountLabel = HudWidgetFactory.createHudLabel("       Artifact Count : ");
+		ArtifactCountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		ArtifactCountLabel.setFont(new Font("Lucida Grande",1,13));
 		ArtifactCountTextField = HudWidgetFactory.createHudTextField("");
 		ArtifactCountTextField.setText("12");
@@ -155,6 +161,7 @@ public class PropertiesTab extends JPanel{
 		propertiesRightTab.add(NotesLabelPane);
 		JScrollPane NotesLabelPanex = new JScrollPane(NotesArea);
 		propertiesRightTab.add(NotesLabelPanex);
+		propertiesRightTab.add(Box.createRigidArea(new Dimension(25,30)));
 		calcButton = HudWidgetFactory.createHudButton("        Calculate          ");
 		propertiesTab.add(Box.createRigidArea(new Dimension(25,25)));
 		propertiesTab.add(calcButton);
@@ -183,7 +190,8 @@ public class PropertiesTab extends JPanel{
 		ArtifactNotesPane.add(ArtifactNotes2Label);
 		ArtifactNotesPane.add(ArtifactNotes2TextFieldPane);
 		propertiesTabContainer.add(Box.createRigidArea(new Dimension(25,10)));
-		ArtifactNotesPane.setVisible(false);
+		ArtifactNotes1TextField.setEditable(false);
+		ArtifactNotes2TextField.setEditable(false);
 		propertiesTabContainer.add(ArtifactNotesPane);
 		ComparisonNotesPane = new JPanel();
 		ComparisonNotesPane.setBackground(Color.DARK_GRAY);
@@ -199,7 +207,7 @@ public class PropertiesTab extends JPanel{
 		ComparisonNotesArea.setForeground(Color.WHITE);
 		JScrollPane ComparisonNotesAreaPane = new JScrollPane(ComparisonNotesArea);
 		ComparisonNotesPane.add(ComparisonNotesAreaPane);
-		ComparisonNotesPane.setVisible(false);
+		ComparisonNotesArea.setEditable(false);
 		propertiesTabContainer.add(Box.createRigidArea(new Dimension(25,10)));
 		propertiesTabContainer.add(ComparisonNotesPane);
 		this.add(propertiesTabContainer);
@@ -305,7 +313,7 @@ public class PropertiesTab extends JPanel{
 						}
 					}
 					if (referenceId == -1) {
-						JOptionPane.showMessageDialog(null,"\nPlease enter reference index.\n");
+						JOptionPane.showMessageDialog(null,"\nPlease enter reference value.\n");
 						return;
 					}
 					Calculator calculator = Calculator.getInstance();
@@ -367,7 +375,6 @@ public class PropertiesTab extends JPanel{
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				if(arg0.getKeyChar() == KeyEvent.VK_ENTER)
 				{
 					MatrixTableModel model = (MatrixTableModel) globals.getMatrix().getModel();
 					model.setComparisonNotes(rowx.toString()+"_"+colx.toString(), ComparisonNotesArea.getText());	
@@ -376,8 +383,10 @@ public class PropertiesTab extends JPanel{
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				{
+					MatrixTableModel model = (MatrixTableModel) globals.getMatrix().getModel();
+					model.setComparisonNotes(rowx.toString()+"_"+colx.toString(), ComparisonNotesArea.getText());	
+				}
 			}
 
 			@Override
@@ -389,11 +398,10 @@ public class PropertiesTab extends JPanel{
 		
 		ArtifactNotes1TextField.addKeyListener(new KeyListener()
 		{
-
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				if(arg0.getKeyChar() == KeyEvent.VK_ENTER)
-				{
+				//if(arg0.getKeyChar() == KeyEvent.VK_ENTER)
+				{	
 					MatrixTableModel model = (MatrixTableModel) globals.getMatrix().getModel();
 					model.setArtifactNotes(rowx-1,ArtifactNotes1TextField.getText());	
 				}
@@ -401,12 +409,16 @@ public class PropertiesTab extends JPanel{
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				{	
+					MatrixTableModel model = (MatrixTableModel) globals.getMatrix().getModel();
+					model.setArtifactNotes(rowx-1,ArtifactNotes1TextField.getText());	
+				}
 			}
 
 			@Override
 			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
 			}
 			
 		});
@@ -416,7 +428,7 @@ public class PropertiesTab extends JPanel{
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				if(arg0.getKeyChar() == KeyEvent.VK_ENTER)
+				//if(arg0.getKeyChar() == KeyEvent.VK_ENTER)
 				{
 					MatrixTableModel model = (MatrixTableModel) globals.getMatrix().getModel();
 					model.setArtifactNotes(colx-2,ArtifactNotes2TextField.getText());	
@@ -425,8 +437,10 @@ public class PropertiesTab extends JPanel{
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				{	
+					MatrixTableModel model = (MatrixTableModel) globals.getMatrix().getModel();
+					model.setArtifactNotes(colx-2,ArtifactNotes2TextField.getText());	
+				}
 			}
 
 			@Override

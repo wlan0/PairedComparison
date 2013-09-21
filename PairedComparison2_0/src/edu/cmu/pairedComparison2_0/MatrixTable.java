@@ -247,7 +247,7 @@ public class MatrixTable extends JTable {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			repaint();
+			//repaint();
 		}
 
 		@Override
