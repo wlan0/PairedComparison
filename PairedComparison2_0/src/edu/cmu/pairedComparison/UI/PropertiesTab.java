@@ -48,7 +48,6 @@ public class PropertiesTab extends JPanel{
 	JTextArea NotesArea;
 	Integer rowx;
 	Integer colx;
-	
 	public void setNotesVisibility(Boolean flag, int row, int col)
 	{
 		ComparisonNotesArea.setEditable(flag);
@@ -94,7 +93,6 @@ public class PropertiesTab extends JPanel{
 		ReplicationFactorlabel.setFont(new Font("Lucida Grande",1,13));
 		RepicationFactortextField = HudWidgetFactory.createHudTextField("");
 		RepicationFactortextField.setFont(new Font("Lucida Grande",1,13));
-		//RepicationFactortextField.setPreferredSize(new Dimension(200,24));
 		RepicationFactortextField.setText("2");
 		JLabel ConfidenceLevelLabel = HudWidgetFactory.createHudLabel(" Confidence Level : ");
 		ConfidenceLevelLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -536,5 +534,10 @@ public class PropertiesTab extends JPanel{
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			RepicationFactortextField.setText(globals.getReplicationFactor().toString());
 		}
+	}
+	
+	public void changeName(String newName)
+	{
+		NamePaneTextField.setText(newName);
 	}
 }

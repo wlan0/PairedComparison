@@ -11,6 +11,7 @@ public class RightBottomPane extends JTabbedPane
 	
 	public RightBottomPane(int width)
 	{
+		this.setTabPlacement(JTabbedPane.TOP);
 		//results tab
 		ResultsTab rightBottom = new ResultsTab(width);
 		//properties tab
