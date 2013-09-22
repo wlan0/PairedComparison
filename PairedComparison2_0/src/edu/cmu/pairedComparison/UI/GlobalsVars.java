@@ -11,20 +11,37 @@ import javax.swing.JTree;
 import edu.cmu.pairedComparison2_0.MatrixTable;
 
 public class GlobalsVars {
-	private MatrixTable table;
-	private Integer artifactCount;
-	private Integer replicationFactor;
+	private MatrixTable table[];
+	private Integer artifactCount[];
+	private Integer replicationFactor[];
 	private JTree tree;
-	private Double confidenceLevel;
-	private JTable Resultstable;
-	private JTabbedPane tabbedPane;
-	private JPanel propertyPane;
+	private Double confidenceLevel[];
+	private JTable Resultstable[];
+	private JTabbedPane tabbedPane[];
+	private JPanel propertyPane[];
 	private HashMap<String, String> comparisonNotes;
-	private Boolean calculated;
+	private Boolean calculated[];
 	private JFrame MainFrame;
+	public RightPanel rightPanel[];
+	int curr;
+	int MAX;
+	int maxIndex;
 	private GlobalsVars()
 	{
+		MAX = 100;
+		curr = 0;
+		maxIndex = 0;
 		comparisonNotes = new HashMap<String, String>();
+		table = new MatrixTable[MAX];
+		artifactCount = new Integer[MAX];
+		replicationFactor = new Integer[MAX];
+		confidenceLevel = new Double[MAX];
+		Resultstable = new JTable[MAX];
+		tabbedPane = new JTabbedPane[MAX];
+		propertyPane = new JPanel[MAX];
+		calculated = new Boolean[MAX];
+		rightPanel = new RightPanel[MAX];
+		
 	}
 
 	private static GlobalsVars instance;
@@ -38,31 +55,31 @@ public class GlobalsVars {
 	
 	public MatrixTable getMatrix()
 	{
-		return table;
+		return table[curr];
 	}
 	
 	public void setMatrix(MatrixTable table)
 	{
-		this.table = table;
+		this.table[curr] = table;
 	}
 	
 	public void setArtifactCount(int artifactCount)
 	{
-		this.artifactCount = artifactCount;
+		this.artifactCount[curr] = artifactCount;
 	}
 	
 	public Integer getArtifactCount()
 	{
-		return artifactCount;
+		return artifactCount[curr];
 	}
 	public void setReplicationFactor(int replicationFactor)
 	{
-		this.replicationFactor = replicationFactor;
+		this.replicationFactor[curr] = replicationFactor;
 	}
 	
 	public Integer getReplicationFactor()
 	{
-		return replicationFactor;
+		return replicationFactor[curr];
 	}
 	
 	public void setTree(JTree tree)
@@ -77,41 +94,41 @@ public class GlobalsVars {
 
 	public void setConfidenceLevel(Double confidenceLevel)
 	{
-		this.confidenceLevel = confidenceLevel;
+		this.confidenceLevel[curr] = confidenceLevel;
 	}
 	
 	public Double getConfidenceLevel()
 	{
-		return confidenceLevel;
+		return confidenceLevel[curr];
 	}
 	
 	public void setTable(JTable table)
 	{
-		this.Resultstable = table;
+		this.Resultstable[curr] = table;
 	}
 	
 	public JTable getTable()
 	{
-		return Resultstable;
+		return Resultstable[curr];
 	}
 	
 	public void setTabbedPane(JTabbedPane tabbedPane)
 	{
-		this.tabbedPane = tabbedPane;
+		this.tabbedPane[curr] = tabbedPane;
 	}
 	
 	public JTabbedPane getTabbedPane()
 	{
-		return tabbedPane;
+		return tabbedPane[curr];
 	}
 	
 	public JPanel getPropertyPane()
 	{
-		return propertyPane;
+		return propertyPane[curr];
 	}
 	public void setPropertyPane(JPanel propertyPane)
 	{
-		this.propertyPane = propertyPane;
+		this.propertyPane[curr] = propertyPane;
 	}
 	
 	public void setComparisonNotes(String Key, String Value)
@@ -124,11 +141,11 @@ public class GlobalsVars {
 	}
 	public void setCalculated(Boolean flag)
 	{
-		calculated = flag;
+		calculated[curr] = flag;
 	}
 	public Boolean isCalculated()
 	{
-		return calculated;
+		return calculated[curr];
 	}
 	public void setMainFrame(JFrame frame)
 	{
@@ -137,5 +154,23 @@ public class GlobalsVars {
 	public JFrame getMainFrame()
 	{
 		return MainFrame;
+	}
+	public Integer getCurrIndex()
+	{
+		return curr;
+	}
+	public void setCurrIndex(Integer index)
+	{
+		curr = index;
+		if(curr > maxIndex)
+			maxIndex = curr;
+	}
+	public void setRightPanel(int artifcatCount, int replicationFactor, int width)
+	{
+		rightPanel[++curr] = new RightPanel(artifcatCount,replicationFactor,width);
+	}
+	public void notifyMainWindow()
+	{
+		((MainWindow)MainFrame).changeRightPanel(rightPanel[curr]);
 	}
 }

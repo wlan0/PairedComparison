@@ -1,6 +1,7 @@
 package edu.cmu.pairedComparison.UI;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 
 import javax.swing.*;
 
@@ -17,6 +18,7 @@ public class MainWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
 	public JFileChooser fileDialog;
 	public FileIO fileIO;
+	RightPanel rightPane;
 	private void setSize(Boolean... isMax)
 	{
 		assert isMax.length <= 1;
@@ -51,11 +53,21 @@ public class MainWindow extends JFrame{
 		LeftPanel leftPane = new LeftPanel(); 
 		this.add(leftPane, BorderLayout.WEST);
 		//Add the Right Panel
-		RightPanel rightPane = new RightPanel(12,2,java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width);
+		rightPane = new RightPanel(12,2,java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width);
+		GlobalsVars.getInstance().rightPanel[0] = rightPane;
 		this.add(rightPane, BorderLayout.CENTER);
 		//Add the Bottom Bar
 		BottomBar bottomBar = new BottomBar(BottomBarSize.LARGE);
 		bottomBar.addComponentToCenter(MacWidgetFactory.createEmphasizedLabel("Paired Comparison Tool (c) Dr.Eduardo Miranda"));
 		this.add(bottomBar.getComponent(),BorderLayout.SOUTH);
+	}
+	public void changeRightPanel(RightPanel panel)
+	{
+		this.remove(rightPane);
+		Container cnt = this.getContentPane();
+		rightPane = panel;
+		cnt.add(rightPane, BorderLayout.CENTER);
+		cnt.validate();
+		cnt.repaint();
 	}
 }

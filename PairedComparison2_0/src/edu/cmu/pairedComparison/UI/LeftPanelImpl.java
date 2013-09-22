@@ -5,6 +5,8 @@ import java.awt.Dimension;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -75,7 +77,7 @@ public class LeftPanelImpl extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				addNewGroup("Group" + Integer.toString(i));
+				addNewGroup("Group " + Integer.toString(i));
 				i = i +1;
 			}
 			
@@ -87,8 +89,11 @@ public class LeftPanelImpl extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				TreePath path = tree.getSelectionPath();
-				treeModel.removeNodeFromParent((DefaultMutableTreeNode)path.getLastPathComponent());
+				if(root.getChildCount() != 1)
+				{
+					TreePath path = tree.getSelectionPath();
+					treeModel.removeNodeFromParent((DefaultMutableTreeNode)path.getLastPathComponent());
+				}
 			}
 			
 		});
@@ -126,6 +131,31 @@ public class LeftPanelImpl extends JPanel
 			
 		});
 		
+		tree.addTreeSelectionListener(new TreeSelectionListener()
+		{
+
+			@Override
+			public void valueChanged(TreeSelectionEvent arg0) {
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+				if(node == null)
+				{
+					return;
+				}
+				int i = 0;
+				if(root.getUserObject().equals(node.getUserObject()))
+					return;
+				for(;i<root.getChildCount();i++)
+				{
+					if(((DefaultMutableTreeNode) ((DefaultMutableTreeNode)root).getChildAt(i)).getUserObject().equals(node.getUserObject()))
+					{
+						break;
+					}
+				}
+				GlobalsVars.getInstance().setCurrIndex(i);
+				GlobalsVars.getInstance().notifyMainWindow();
+			}
+			
+		});
 		
 	}
 	
@@ -134,7 +164,7 @@ public class LeftPanelImpl extends JPanel
 		DefaultMutableTreeNode newGroup = new DefaultMutableTreeNode(groupName);
 		DefaultMutableTreeNode parent = null;
 		TreePath parentPath = tree.getSelectionPath();
-		if(parentPath == null)
+		if(parentPath == null || parentPath.getLastPathComponent() == root)
 		{
 			parent = root;
 		}
@@ -144,7 +174,10 @@ public class LeftPanelImpl extends JPanel
 			return;
 		}
 		treeModel.insertNodeInto(newGroup, parent, parent.getChildCount());
-		tree.expandPath(new TreePath(newGroup.getPath()));
-
+		if(parent.getChildCount() != 1)
+		{	
+			GlobalsVars.getInstance().setRightPanel(12,2,java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width);
+			GlobalsVars.getInstance().notifyMainWindow();
+		}
 	}
 }

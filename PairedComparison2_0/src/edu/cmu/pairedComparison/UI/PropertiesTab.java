@@ -354,10 +354,10 @@ public class PropertiesTab extends JPanel{
 					GlobalsVars.getInstance().getTabbedPane().setSelectedIndex(1);
 					JTree tree = GlobalsVars.getInstance().getTree();
 					DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
-					DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(0);
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(globals.getCurrIndex());
 					for(int i=0;i<globals.getArtifactCount();i++)
 					{
-						node.add(new DefaultMutableTreeNode(model.getArtifacts()[i]));
+						//node.add(new DefaultMutableTreeNode(model.getArtifacts()[i]));
 					}
 				}
 				catch(Exception e)
